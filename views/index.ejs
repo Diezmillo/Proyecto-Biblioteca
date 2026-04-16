@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Inicio</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="flex flex-col min-h-screen bg-green-100">
+    <header class="bg-red-700 text-white shadow">
+        <div class="container mx-auto flex items-center justify-between px-6 py-4">
+            <h1 class="text-2xl font-bold flex items-center gap-2">📚 Biblioteca</h1>
+            <nav class="space-x-6">
+                <a href="/" class="hover:underline">Inicio</a>
+                <% if (!user) { %>
+                    <a href="#auth" class="hover:underline">Login</a>
+                <% } else { %>
+                    <span class="mr-4">👤 <%= user.name %></span>
+                    <% if (user.userType === "admin") { %>
+                        <a href="/categorias" class="hover:underline">Categorías</a>
+                    <% } %>
+                    <% if (user.userType === "user") { %>
+                        <a href="/mis-prestamos" class="hover:underline">Mis préstamos</a>
+                    <% } %>
+                    <a href="/logout" class="hover:underline">Logout</a>
+                <% } %>
+            </nav>
+        </div>
+    </header>
+    <section class="relative bg-gray-200 flex-1">
+        <div class="container mx-auto flex flex-col-reverse md:flex-row items-center px-6 py-16">
+            <div class="md:w-1/2 text-center md:text-left space-y-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Bienvenido a la Biblioteca</h2>
+                <p class="text-gray-700 text-lg">Explora nuestro catálogo de libros, 
+                    gestiona tus préstamos y descubre conocimiento.</p>
+                <a href="#catalogo"
+                class="inline-block bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-800 transition">
+                    Ver Catálogo</a>
+            </div>
+            <div class="md:w-1/2 mb-6 md:mb-0">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794"
+                class="rounded shadow-lg">
+            </div>
+        </div>
+    </section>
+    <% if (!user) { %>
+    <section id="auth" class="container mx-auto px-6 py-12">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- REGISTRO -->
+            <div class="bg-white p-6 rounded shadow">
+                <h3 class="text-2xl font-bold mb-4 text-center">Registro</h3>
+                <form action="/register" method="POST" class="space-y-4">
+                    <input type="text"
+                    name="name"
+                    placeholder="Usuario"
+                    required
+                    class="w-full p-2 border rounded">
+
+                    <input type="email"
+                    name="email"
+                    placeholder="Correo"
+                    required
+                    class="w-full p-2 border rounded">
+
+                    <input type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    required
+                    class="w-full p-2 border rounded">
+
+                    <button type="submit"
+                    class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
+                        Registrarse</button>
+                </form>
+            </div>
+            <!-- LOGIN -->
+            <div class="bg-white p-6 rounded shadow">
+                <h3 class="text-2xl font-bold mb-4 text-center">Iniciar Sesión</h3>
+                <form action="/login" method="POST" class="space-y-4">
+                    <input type="email"
+                    name="email"
+                    placeholder="Correo"
+                    required
+                    class="w-full p-2 border rounded">
+
+                    <input type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    required
+                    class="w-full p-2 border rounded">
+
+                    <button type="submit"
+                    class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+                        Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <% } %>
+    <section id="catalogo" class="container mx-auto px-6 py-12">
+        <h3 class="text-3xl font-bold text-gray-800 text-center mb-10">Nuestros Libros</h3>
+        <% if (user && user.userType === "admin") { %>
+        <div class="mb-6 text-right flex justify-center">
+            <a href="/libros/agregar"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+ Agregar Libro</a>
+        </div>
+        <% } %>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <% libros.forEach(libro => { %>
+            <div class="bg-white p-4 rounded shadow hover:shadow-lg transition">
+                <img src="<%= libro.imagen %>" class="rounded mb-4">
+                <h4 class="font-semibold text-lg">
+                    <%= libro.titulo %>
+                </h4>
+                <p class="text-gray-600 text-sm mb-4">
+                    <%= libro.descripcion %>
+                </p>
+                <div class="flex justify-between">
+                    <% if (user && user.userType === "admin") { %>
+                    <a href="/libros/editar/<%= libro.id %>"
+                    class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Editar</a>
+                    <a href="/libros/eliminar/<%= libro.id %>"onclick="return confirm('¿Seguro?')"
+                    class="bg-red-600 text-white px-3 py-1 rounded text-sm">Eliminar</a>
+                    <% } %>
+                    <% if (user && user.userType === "user") { %>
+                        <a href="/prestamos/<%= libro.id %>"
+                        class="bg-purple-600 text-white px-3 py-1 rounded text-sm">Prestar</a>
+                    <% } %>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+        <div class="mt-10 flex justify-center gap-2">
+            <% for(let i = 1; i <= totalPages; i++) { %>
+                <a href="/?page=<%= i %>"
+                class="px-4 py-2 rounded <%= i === currentPage ? 'bg-blue-700 text-white' : 'bg-white border hover:bg-gray-100' %>">
+                <%= i %>
+                </a>
+            <% } %>
+        </div>
+    </section>
+    <footer class="bg-gray-800 text-white text-center py-6 mt-auto">
+    © 2026 Biblioteca Pública
+    </footer>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías - Biblioteca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-100 min-h-screen">
+
+<!-- Contenedor principal -->
+<div class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 flex items-center gap-3">
+            📂 Categorías
+        </h1>
+        <button id="openModal"
+                class="bg-green-600 text-white px-5 py-2 rounded-lg shadow hover:bg-green-700 transition">
+            + Agregar Categoría
+        </button>
+    </div>
+
+    <!-- Tabla de categorías -->
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-gray-600 font-semibold">ID</th>
+                    <th class="px-6 py-3 text-left text-gray-600 font-semibold">Nombre</th>
+                    <th class="px-6 py-3 text-center text-gray-600 font-semibold">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <% categorias.forEach(cat => { %>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium text-gray-700"><%= cat.id %></td>
+                    <td class="px-6 py-4 text-gray-800"><%= cat.nombre %></td>
+                    <td class="px-6 py-4 flex justify-center gap-2">
+                        <a href="/categorias/editar/<%= cat.id %>"
+                           class="bg-blue-600 text-white px-4 py-1 rounded-lg hover:bg-blue-700 shadow transition">
+                            Editar
+                        </a>
+                        <a href="/categorias/eliminar/<%= cat.id %>"
+                           class="bg-red-600 text-white px-4 py-1 rounded-lg hover:bg-red-700 shadow transition"
+                           onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/" class="mt-6 inline-block text-green-700 hover:underline">← Volver al inicio</a>
+</div>
+
+<!-- Modal Agregar Categoría -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-xl w-full max-w-md p-8 shadow-lg relative">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Agregar Nueva Categoría</h2>
+        <form action="/categorias/agregar" method="POST" class="space-y-4">
+            <input type="text" name="nombre" placeholder="Nombre de la categoría" required
+                   class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div class="flex justify-end gap-2">
+                <button type="button" id="closeModal"
+                        class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition">
+                    Cancelar
+                </button>
+                <button type="submit"
+                        class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition">
+                    Agregar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('modal');
+    const openBtn = document.getElementById('openModal');
+    const closeBtn = document.getElementById('closeModal');
+
+    openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+    closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+</script>
+
+</body>
+</html>
