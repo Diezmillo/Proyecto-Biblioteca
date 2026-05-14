@@ -10,20 +10,10 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
-<<<<<<< HEAD
     "dotenv": "^17.4.2",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "mysql2": "^3.22.3",
-    "nodemailer": "^8.0.7"
+    "mysql2": "^3.22.3"
   }
 }
-=======
-    "ejs": "^4.0.1",
-    "express": "^5.2.1",
-    "express-session": "^1.19.0",
-    "mysql2": "^3.18.2"
-  }
-}
->>>>>>> a643581d27a67c0eee3caf03a5a70c3e87296dbe

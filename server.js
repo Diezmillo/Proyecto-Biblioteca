@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 require("dotenv").config();
-=======
->>>>>>> a643581d27a67c0eee3caf03a5a70c3e87296dbe
 const express = require("express");
 const mysql = require("mysql2/promise");
 const session = require("express-session");
@@ -95,14 +92,13 @@ app.post("/login", async (req, res) => {
         res.send("Error en el login");
     }
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> a643581d27a67c0eee3caf03a5a70c3e87296dbe
 // Logout
 app.get("/logout", (req, res) => {
     req.session.destroy();
     res.redirect("/");
+});
+app.get("/api/debug", (req,res)=>{
+    res.json({ ok: true, time: new Date() });
 });
 // Home con libros + paginación
 app.get("/", async (req, res) => {
@@ -243,7 +239,6 @@ app.get("/prestamos/devolver/:id", authMiddleware, async (req,res)=>{
     await db.query(`UPDATE libros JOIN prestamos ON prestamos.libro_id=libros.id
     SET libros.disponible=true WHERE prestamos.id=?`,[prestamo]);
     res.redirect("/mis-prestamos");}
-<<<<<<< HEAD
     catch(error){console.log(error);res.send("Error");}
 });
 // API LOGIN
@@ -401,12 +396,7 @@ app.get("/api/mis-prestamos", async (req, res) => {
     }
 });
 
-=======
-    
-    catch(error){console.log(error);res.send("Error");}
-});
->>>>>>> a643581d27a67c0eee3caf03a5a70c3e87296dbe
 // Servidor
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });
