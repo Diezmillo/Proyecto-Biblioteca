@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+    <meta charset="UTF-8">
+    <title>Mis préstamos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gradient-to-br from-green-100 to-green-300 min-h-screen">
+        <div class="container mx-auto px-6 py-12">
+            <div class="bg-white shadow-xl rounded-xl p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">📚 Mis préstamos</h1>
+                    <a href="/" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition">
+                        Volver</a>
+                </div>
+                <% if(prestamos.length===0){ %>
+                <div class="text-center text-gray-600 text-lg">No tienes préstamos activos</div>
+                <% } %>
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-green-600 text-black">
+                            <th class="p-3 text-left">Libro</th>
+                            <th class="p-3">Fecha préstamo</th>
+                            <th class="p-3">Fecha devolución</th>
+                            <th class="p-3">Estado</th>
+                            <th class="p-3">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% prestamos.forEach(p=>{ %>
+                            <tr class="border-b hover:bg-gray-100 transition">
+                                <td class="p-3 font-semibold"><%= p.titulo %></td>
+                                <td class="p-3 text-center"><%= p.fecha_prestamo %></td>
+                                <td class="p-3 text-center"><%= p.fecha_devolucion %></td>
+                                <td class="p-3 text-center"><% if(p.estado==="Prestado"){ %>
+                                    <span class="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm">
+                                        Prestado</span>
+                                    <% } else { %>
+                                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm">
+                                        Devuelto</span>
+                                    <% } %>
+                                </td>
+                                <td class="p-3 text-center">
+                                    <% if(p.estado==="Prestado"){ %>
+                                        <a href="/prestamos/devolver/<%= p.id %>"
+                                        class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700 transition">
+                                        Devolver</a>
+                                    <% } else { %>
+                                        <span class="text-gray-400">✔ Devuelto</span>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

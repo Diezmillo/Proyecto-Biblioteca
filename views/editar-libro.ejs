@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Libro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-100 min-h-screen flex items-center justify-center">
+<div class="bg-white p-8 rounded shadow w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Editar Libro</h2>
+    <form action="/libros/editar/<%= libro.id %>" method="POST" class="space-y-4">
+        <input type="text" name="titulo" value="<%= libro.titulo %>" required
+               class="w-full p-3 border rounded">
+        <textarea name="descripcion" required
+                  class="w-full p-3 border rounded"><%= libro.descripcion %></textarea>
+        <input type="text" name="imagen" value="<%= libro.imagen %>" required
+               class="w-full p-3 border rounded">
+        <button type="submit"
+                class="w-full bg-green-600 text-white p-3 rounded hover:bg-green-700">Actualizar
+        </button>
+    </form>
+    <a href="/" class="block mt-4 text-center text-gray-600 underline">Cancelar</a>
+</div>
+</body>
+</html>
